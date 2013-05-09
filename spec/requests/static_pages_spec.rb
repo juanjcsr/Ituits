@@ -1,44 +1,52 @@
 require 'spec_helper'
 
 describe "StaticPages" do
+  subject { page }
+  
   describe "Home page" do
-  	it "should have the content 'iTuits'" do
-  		visit '/static_pages/home'
-  		page.should have_content('iTuits')
-  	end
+    before { visit root_path }
+  	it { should have_selector('h1', :text => 'Bienvenido a iTuits')}
 
     it "should have the base title" do
-      visit '/static_pages/home'
       page.should have_selector 'title', :text => 'iTuits'
     end
 
     it "should not have a custom page title" do
-      visit '/static_pages/home'
       page.should_not have_selector 'title', :text => '| Home'
     end
   end
 
   describe "Help page" do
+    before { visit help_path }
   	it "should have the content 'Ayuda'" do
-  		visit '/static_pages/help'
   		page.should have_content 'Ayuda'
   	end
 
     it "should have the title 'Ayuda'" do
-      visit '/static_pages/help'
       page.should have_selector 'title', :text => 'iTuits | Ayuda'
     end
   end
 
   describe "Acerca de" do
+    before { visit about_path }
     it "should have the content 'Acerca De'" do
-      visit '/static_pages/about'
       page.should have_content 'Acerca De'
     end
 
+
     it "should have the title 'About'" do
-      visit '/static_pages/about'
       page.should have_selector 'title', :text => 'iTuits | About'
+    end
+  end
+
+  describe "Contacto" do
+    before {visit contact_path }
+    it "should have the h1 'Contacto'" do
+      page.should have_selector('h1', text: 'Contacto')
+    end
+
+    it "should have the title 'Contacto'" do
+      page.should have_selector('title', :text => 'iTuits | Contacto' )
     end
   end
 end
