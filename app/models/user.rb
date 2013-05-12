@@ -11,12 +11,14 @@
 
 class User < ActiveRecord::Base
   attr_accessible :email, :name, :password, :password_confirmation
-  #let RoR handle password stuff
+  #let RoR handle password stuff (authenticate methods)
   has_secure_password
 
 
   #Antes de guardar el usuario, pasa el email a minusculas
   before_save { |user| user.email = email.downcase}
+  #antes de guardar hay que crear un token para guardar al usuario 
+  before_save :create_remember_token
 
   #Valida que exista un nombre y que la longitud sea menor o igual a 50
   validates :name, :presence => true, :length => { maximum: 50 }
@@ -29,4 +31,10 @@ class User < ActiveRecord::Base
 
   validates :password, presence: true, length: { minimum: 6 }
   validates :password_confirmation, presence: true
+
+  private
+
+    def create_remember_token
+      self.remember_token = SecureRandom.urlsafe_base64
+    end
 end

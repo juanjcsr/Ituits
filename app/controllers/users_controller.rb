@@ -9,6 +9,7 @@ class UsersController < ApplicationController
   	@user = User.new(params[:user])
   	if @user.save
   		#Handle a successful save.
+      log_in @user
       flash[:success] = "Bienvenido a iTuits"
       redirect_to @user
   	else

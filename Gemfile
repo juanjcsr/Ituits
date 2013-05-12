@@ -38,6 +38,8 @@ group :test do
 	gem 'rb-inotify', '0.9'
   	gem 'libnotify', '0.5.9'
   	gem 'factory_girl_rails'
+  	gem 'cucumber-rails', :require => false
+  	gem 'database_cleaner'
 end
 
 group :production do

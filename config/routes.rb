@@ -2,12 +2,16 @@ Ituits::Application.routes.draw do
 
   #Genera las rutas REST para User
   resources :users
+  #Rutas REST para el inicio de sesion
+  resources :sessions, only: [:new, :create, :destroy]
 
   #Genera la ruta a /
   root :to => 'static_pages#home'
 
 
   match '/registro', to: 'users#new'
+  match '/login', to: 'sessions#new'
+  match '/logout', to: 'sessions#destroy', via: :delete
   match '/help', to: 'static_pages#help'
   match '/about', to: 'static_pages#about'
   match '/contact', to: 'static_pages#contact'
