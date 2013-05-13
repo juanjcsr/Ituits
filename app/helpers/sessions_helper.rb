@@ -28,4 +28,14 @@ module SessionsHelper
 		#cookies.delete(:remember_token)
 		session[:user_id] = nil
 	end
+
+	#Metodos para guardar la ubicacion para los redirects
+	def redirect_back_or(default)
+		redirect_to(session[:return_to] || default)
+		session.delete(:return_to)
+	end
+
+	def store_last_location
+		session[:return_to] = request.url
+	end
 end

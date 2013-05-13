@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
 		if (user && user.authenticate(params[:session][:password]))
 			#inicia sesion con el usuario y redirigelo a la pagina user show (su perfil)
 			log_in user
-			redirect_to user
+			redirect_back_or user
 		else
 			#en caso de error en sesion
 			flash.now[:error] = "Invalid email/password combination"

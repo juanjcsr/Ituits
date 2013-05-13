@@ -56,7 +56,6 @@ describe "Authentication" do
 			let(:user) { FactoryGirl.create(:user) }
 
 			describe "en el controlador Users" do
-				
 				describe "visitando la pagina de edicion" do
 					before { visit edit_user_path(user) }
 					it { should have_selector('title', text: 'Log in') }
@@ -65,6 +64,26 @@ describe "Authentication" do
 				describe "realizando una actualizacion" do
 					before { put user_path(user) }
 					specify { response.should redirect_to(login_path) }
+				end
+
+				describe "visitando el indice de usuarios" do
+					before { visit users_path }
+					it { should have_selector('title', text: 'Log in')}
+				end
+			end
+
+			describe "al intentar visitar una pagina protegida" do
+				before do
+					visit edit_user_path(user)
+					fill_in "Email",  with: user.email
+					fill_in "Password", with: user.password
+					click_button "Iniciar"
+				end
+
+				describe "despues de iniciar sesion" do
+					it "debe mostrarse la pagina protegida" do
+						page.should have_selector('title', text: 'Editar usuario')
+					end
 				end
 			end
 		end
@@ -83,9 +102,6 @@ describe "Authentication" do
 				before { put user_path(mal_usuario) }
 				specify { response.should redirect_to(root_path) }
 			end
-
 		end
-
-
 	end
 end

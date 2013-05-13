@@ -8,6 +8,11 @@ class UsersController < ApplicationController
   	@user = User.new
   end
 
+  #GET
+  def index
+    
+  end
+
   #POST
   def create
   	@user = User.new(params[:user])
@@ -46,7 +51,11 @@ class UsersController < ApplicationController
   private
 
     def signed_in_user
-      redirect_to login_url, notice: "Registrate primero" unless signed_in?
+      #Para almacenar la ruta de redireccion en caso de no estar en sesion
+      unless signed_in?
+        store_last_location
+        redirect_to login_url, notice: "Inicia sesion primero"
+      end
     end
 
     def usuario_correcto
