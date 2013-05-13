@@ -35,9 +35,12 @@ describe "Authentication" do
 				click_button "Iniciar"
 			end
 
+			before { log_in user }
+
 			it { should have_selector('title', text: user.name) }
 			it { should have_link('Perfil', href: user_path(user)) }
 			it { should have_link('Salir', href: logout_path) }
+			it { should have_link('Ajustes', href: edit_user_path(user))}
 			it { should_not have_link('Log in', href: login_path) }
 
 			describe "despues de terminar sesion" do
@@ -45,5 +48,44 @@ describe "Authentication" do
 				it { should have_link('Iniciar sesion')}
 			end
 		end
+	end
+
+	describe "authrizacion" do
+
+		describe "para usuarios sin sesion" do
+			let(:user) { FactoryGirl.create(:user) }
+
+			describe "en el controlador Users" do
+				
+				describe "visitando la pagina de edicion" do
+					before { visit edit_user_path(user) }
+					it { should have_selector('title', text: 'Log in') }
+				end
+
+				describe "realizando una actualizacion" do
+					before { put user_path(user) }
+					specify { response.should redirect_to(login_path) }
+				end
+			end
+		end
+
+		describe "para usuarios incorrects" do
+			let(:user) { FactoryGirl.create(:user) }
+			let(:mal_usuario) { FactoryGirl.create(:user, email: "mal@usuario.com") }
+			before { log_in user }
+
+			describe "visitando pagina Users#edit" do
+				before { visit edit_user_path(mal_usuario) }
+				it { should_not have_selector('title', text: "Editar usuario") }
+			end
+
+			describe "realizar una accion PUT hacia Users#put" do
+				before { put user_path(mal_usuario) }
+				specify { response.should redirect_to(root_path) }
+			end
+
+		end
+
+
 	end
 end
