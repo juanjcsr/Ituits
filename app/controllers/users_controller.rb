@@ -1,7 +1,8 @@
 class UsersController < ApplicationController
   #realiza metodos antes de las acciones del controlador
-  before_filter :signed_in_user, only: [:edit, :update]
+  before_filter :signed_in_user, only: [:edit, :update, :index, :destroy]
   before_filter :usuario_correcto, only: [:edit, :update]
+  before_filter :usuario_admin, only: :destroy
 
   #GET
   def new
@@ -10,7 +11,9 @@ class UsersController < ApplicationController
 
   #GET
   def index
-    
+    #@users = User.all
+    #Paginar usuarios
+    @users = User.paginate(page: params[:page], per_page: 10)
   end
 
   #POST
@@ -48,6 +51,13 @@ class UsersController < ApplicationController
     end
   end
 
+  #GET
+  def destroy
+    User.find(params[:id]).destroy
+    flash[:success] = "Usuario eliminado"
+    redirect_to users_url
+  end
+
   private
 
     def signed_in_user
@@ -61,5 +71,9 @@ class UsersController < ApplicationController
     def usuario_correcto
       @user = User.find(params[:id])
       redirect_to(root_path) unless current_user?(@user)
+    end
+
+    def usuario_admin
+      redirect_to(root_path) unless  current_user.admin?
     end
 end

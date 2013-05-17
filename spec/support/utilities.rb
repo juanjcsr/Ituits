@@ -5,7 +5,8 @@ def log_in(user)
   click_button "Iniciar"
 
   #Sign in when not using Capybara
+  cookies[:remember_token] = user.remember_token
   #post sessions_path, :email => user.email, :password => user.password, :password_confirmation => user.password
   #Session#create requiere un nested hash!!!
-  post sessions_path, :session => { :email => "jjuanchow@gmail.com", :password => "juancho" }
+  #post sessions_path, :session => { :email => "jjuanchow@gmail.com", :password => "juancho" }
 end
