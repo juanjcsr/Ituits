@@ -17,6 +17,9 @@ class User < ActiveRecord::Base
   #let RoR handle password stuff (authenticate methods)
   has_secure_password
 
+  #Relacion de usuarios a minituits, destruir los minituits dependientes
+  has_many :minituits, dependent: :destroy
+
 
   #Antes de guardar el usuario, pasa el email a minusculas
   before_save { |user| user.email = email.downcase}

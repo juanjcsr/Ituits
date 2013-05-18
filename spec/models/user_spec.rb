@@ -30,6 +30,8 @@ describe User do
   it { should respond_to( :admin) }
   it { should respond_to( :authenticate )}
 
+  it { should respond_to( :minituits) }
+
   it { should be_valid }
   it { should_not be_admin}
 
@@ -137,6 +139,32 @@ describe User do
   describe "recordar token" do
     before { @user.save }
     its(:remember_token) {should_not be_blank}
+  end
+
+  describe "asociaciones de minituits" do
+    
+    before { @user.save }
+    let!(:minituit_viejo) do
+      FactoryGirl.create(:minituit, user: @user, created_at: 1.day.ago)
+    end
+
+    let!(:minituit_nuevo) do
+      FactoryGirl.create(:minituit, user: @user, created_at: 1.hour.ago)
+    end
+
+    it "debe tener a los minituits en el orden correcto" do
+      @user.minituits.should == [minituit_nuevo, minituit_viejo]
+    end
+
+    it "debe destruir a sus minituits asociados" do
+      minituits = @user.minituits.dup
+      @user.destroy
+      minituits.should_not be_empty
+      minituits.each do |minituit|
+        Minituit.find_by_id(minituit.id).should be_nil
+      end
+    end
+
   end
 
 end

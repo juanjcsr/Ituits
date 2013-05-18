@@ -10,4 +10,9 @@ FactoryGirl.define do
     end
   end
 
+  factory :minituit do
+    content "Lorem ipsum"
+    user
+  end
+
 end
