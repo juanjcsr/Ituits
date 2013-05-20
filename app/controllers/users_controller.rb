@@ -32,6 +32,7 @@ class UsersController < ApplicationController
   #GET
   def show
   	@user = User.find(params[:id])
+    @minituits = @user.minituits.paginate(page: params[:page])
   end
 
   #GET

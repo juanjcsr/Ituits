@@ -84,10 +84,24 @@ describe "UserPages" do
 
   describe "profile page" do
   	let(:user) { FactoryGirl.create(:user) }
-  	before { visit user_path(user) }
+    #minituits! 
+    #let! (let BANG) permite crear objetos en el momento (let se evalua de forma lazy, 
+    # (hasta que se evalua), entonces let! permite crearlos en este momento
+    let!(:mt1) { FactoryGirl.create(:minituit, user: user, content: "Foo") }
+    let!(:mt2) { FactoryGirl.create(:minituit, user: user, content: "Bar") }
+
+  	before do
+      visit user_path(user) 
+    end
 
   	it { should have_selector('h1', text: user.name) }
   	it { should have_selector('title', text: user.name)}
+
+    describe "minituits" do
+      it { should have_content(mt1.content) }
+      it { should have_content(mt2.content) }
+      it { should have_content(user.minituits.count) }
+    end
   end
 
   describe "editar" do

@@ -1,0 +1,7 @@
+<li>
+	<span class="content"><%= minituit.content %></span>
+	<span class="timestamp">
+		Escrito hace <%= time_ago_in_words(minituit.created_at) %>.
+	</span>
+	<%= render 'shared/delete_minituit', object: minituit %>
+</li>

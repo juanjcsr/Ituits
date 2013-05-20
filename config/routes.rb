@@ -4,6 +4,8 @@ Ituits::Application.routes.draw do
   resources :users
   #Rutas REST para el inicio de sesion
   resources :sessions, only: [:new, :create, :destroy]
+  #Rutas REST para Minituits
+  resources :minituits, only: [:create, :destroy]
 
   #Genera la ruta a /
   root :to => 'static_pages#home'

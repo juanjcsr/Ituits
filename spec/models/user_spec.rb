@@ -31,11 +31,12 @@ describe User do
   it { should respond_to( :authenticate )}
 
   it { should respond_to( :minituits) }
+  it { should respond_to(:feed) }
 
   it { should be_valid }
   it { should_not be_admin}
 
-  describe "con el atributo admin como verdader" do
+  describe "con el atributo admin como verdadero" do
     before do
       @user.save!
       @user.toggle!(:admin)
@@ -163,6 +164,16 @@ describe User do
       minituits.each do |minituit|
         Minituit.find_by_id(minituit.id).should be_nil
       end
+    end
+
+    describe "status" do
+      let(:minituit_sin_seguir) do
+        FactoryGirl.create(:minituit, user: FactoryGirl.create(:user))
+      end
+
+      its(:feed) { should include(minituit_nuevo) }
+      its(:feed) { should include(minituit_viejo) }
+      its(:feed) {should_not include(minituit_sin_seguir)}
     end
 
   end

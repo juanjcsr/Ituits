@@ -8,6 +8,15 @@
 			</h1>
 		</section>
 	</aside>
+	<div class="span8">
+		<% if @user.minituits.any? %>
+		<h3>iTuits (<%= @user.minituits.count %>)</h3>
+		<ol class="minituits">
+			<%= render @minituits %>
+		</ol>
+		<%= will_paginate @minituits %>
+		<% end %>
+	</div>
 </div>
 
 

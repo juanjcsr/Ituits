@@ -1,0 +1,7 @@
+<%= form_for(@minituit) do |f| %>
+	<%= render 'shared/error_messages', object: f.object %>
+	<div class="field">
+		<%= f.text_area :content, placeholder: "Que esta pasando?" %>
+	</div>
+	<%= f.submit "Tuit", class: "btn btn-large btn-primary" %>
+<% end %>

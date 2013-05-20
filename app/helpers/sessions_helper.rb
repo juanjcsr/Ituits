@@ -18,6 +18,14 @@ module SessionsHelper
 		user == current_user
 	end
 
+	def signed_in_user
+      #Para almacenar la ruta de redireccion en caso de no estar en sesion
+  	unless signed_in?
+    	store_last_location
+    	redirect_to login_url, notice: "Inicia sesion primero"
+  	end
+  end
+
 	def current_user
 		@current_user ||= User.find_by_remember_token(cookies[:remember_token])
 		#@current_user ||= User.find_by_id(session[:user_id])

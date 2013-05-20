@@ -50,7 +50,7 @@ describe "Authentication" do
 		end
 	end
 
-	describe "authrizacion" do
+	describe "autorizacion" do
 
 		describe "para usuarios sin sesion" do
 			let(:user) { FactoryGirl.create(:user) }
@@ -69,6 +69,18 @@ describe "Authentication" do
 				describe "visitando el indice de usuarios" do
 					before { visit users_path }
 					it { should have_selector('title', text: 'Log in')}
+				end
+			end
+
+			describe "en el controlador de Minituits" do
+				describe "realizando la accion crear" do
+					before { post minituits_path }
+					specify { response.should redirect_to(login_path) }
+				end
+
+				describe "realizando la accion de destruir" do
+					before { delete minituit_path(FactoryGirl.create(:minituit)) }
+					specify { response.should redirect_to(login_path) }
 				end
 			end
 
