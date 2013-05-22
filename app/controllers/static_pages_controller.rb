@@ -4,7 +4,7 @@ class StaticPagesController < ApplicationController
 #They 'serve' the views home.html.erb and help.html.erb
   def home
     if signed_in?
-      @minituit = current_user.minituits.build
+      @minituit   = current_user.minituits.build
       @feed_items = current_user.feed.paginate(page: params[:page])
     end
   end

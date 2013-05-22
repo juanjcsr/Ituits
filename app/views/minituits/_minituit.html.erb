@@ -1,4 +1,8 @@
 <li>
+	<%= gravatar_for @user %>
+	<span class="user">
+		<%= link_to @user.name, @user %>
+	</span>
 	<span class="content"><%= minituit.content %></span>
 	<span class="timestamp">
 		Escrito hace <%= time_ago_in_words(minituit.created_at) %>.
