@@ -146,4 +146,33 @@ describe "UserPages" do
     end
   end
 
+  describe "following/followers" do
+    let(:user) { FactoryGirl.create(:user) }
+    let(:other_user) { FactoryGirl.create(:user) }
+    before { user.follow!(other_user) }
+
+    describe "usuarios seguidos" do
+      before do
+        log_in user
+        visit following_user_path(user)
+      end
+
+      
+      it { should have_selector('h3', text: "Following") }
+      it { should have_link(other_user.name, href: user_path(other_user)) }
+
+    end
+
+    describe "seguidores" do
+      before do
+        log_in user
+        visit followers_user_path(other_user)
+      end
+
+      
+      it { should have_selector('h3', text: "Followers") }
+      it { should have_link(user.name, href: user_path(user)) }
+    end
+  end
+
 end

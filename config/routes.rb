@@ -1,11 +1,17 @@
 Ituits::Application.routes.draw do
 
   #Genera las rutas REST para User
-  resources :users
+  resources :users do
+    member do
+      get :following, :followers
+    end
+  end
   #Rutas REST para el inicio de sesion
   resources :sessions, only: [:new, :create, :destroy]
   #Rutas REST para Minituits
   resources :minituits, only: [:create, :destroy]
+  #rutas REST para las relaciones
+  resources :relationships, only: [:create, :destroy]
 
   #Genera la ruta a /
   root :to => 'static_pages#home'

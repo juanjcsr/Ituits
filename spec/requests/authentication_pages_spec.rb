@@ -70,6 +70,16 @@ describe "Authentication" do
 					before { visit users_path }
 					it { should have_selector('title', text: 'Log in')}
 				end
+
+				describe "visitando la pagina de following" do
+					before { visit following_user_path(user) }
+					it { should have_selector('title', text: "Log in") }
+				end
+
+				describe "visitando la pagina de followers" do
+					before { visit followers_user_path(user) }
+					it { should have_selector('title', text: "Log in")}
+				end
 			end
 
 			describe "en el controlador de Minituits" do
