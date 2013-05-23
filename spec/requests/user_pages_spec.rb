@@ -127,10 +127,12 @@ describe "UserPages" do
     describe "con informacion valida" do
       let(:new_name) { "Nuevo nombre" }
       let(:new_email) { "nuevo@email.com" }
+      let(:new_username) { "nuevousername"}
 
       before do
         fill_in "Nombre",      with: new_name
         fill_in "Email",       with: new_email
+        fill_in "Username",    with: new_username
         fill_in "Password",    with: user.password
         fill_in "Confirma password", with: user.password
         click_button "Guardar cambios"
