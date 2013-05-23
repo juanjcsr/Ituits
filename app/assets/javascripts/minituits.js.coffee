@@ -1,6 +1,10 @@
 updateCountdown = ->
   remaining = 140 - jQuery("#minituit_content").val().length
-  jQuery(".countdown").text remaining + " characters remaining"
+  jQuery(".countdown").text remaining + "."
+  if (remaining < 0)
+  	jQuery("#submitItuit").attr('disabled', 'disabled')
+  else
+  	jQuery("#submitItuit").removeAttr('disabled')
 
 jQuery ->
   updateCountdown()
