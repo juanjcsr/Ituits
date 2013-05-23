@@ -16,7 +16,7 @@ require 'spec_helper'
 
 describe User do
   
-  before { @user = User.new(name: "JC Ejemplo", email: "email@ejemplo.com", password: "foobar", password_confirmation: "foobar") }
+  before { @user = User.new(name: "JC Ejemplo", username: "jjuanchow", email: "email@ejemplo.com", password: "foobar", password_confirmation: "foobar") }
 
 
   subject { @user }
@@ -29,6 +29,7 @@ describe User do
   it { should respond_to( :remember_token) }
   it { should respond_to( :admin) }
   it { should respond_to( :authenticate )}
+  it { should respond_to( :username) }
 
   it { should respond_to( :minituits) }
   it { should respond_to(:feed) }
@@ -59,6 +60,13 @@ describe User do
   	before { @user.email = " "}
   	it { should_not be_valid }
   end
+
+  describe "when username is not present" do
+    before { @user.username = " "}
+    it { should_not be_valid }
+  end
+
+
 
   describe "when name is too long" do
   	before { @user.name = "a" * 51 }
@@ -93,6 +101,16 @@ describe User do
   	end
 
   	it { should_not be_valid }
+  end
+
+  describe "when username is already taken" do
+    before do
+      usuario_con_mismo_username = @user.dup
+      usuario_con_mismo_username.username = @user.username.upcase
+      usuario_con_mismo_username.save
+    end
+
+    it { should_not be_valid }
   end
 
   describe "when password is not present" do

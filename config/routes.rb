@@ -6,6 +6,8 @@ Ituits::Application.routes.draw do
       get :following, :followers
     end
   end
+
+
   #Rutas REST para el inicio de sesion
   resources :sessions, only: [:new, :create, :destroy]
   #Rutas REST para Minituits
@@ -23,6 +25,8 @@ Ituits::Application.routes.draw do
   match '/help', to: 'static_pages#help'
   match '/about', to: 'static_pages#about'
   match '/contact', to: 'static_pages#contact'
+
+  match '/:id', to: 'users#show'
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

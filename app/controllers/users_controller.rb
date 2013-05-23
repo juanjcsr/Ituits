@@ -32,7 +32,7 @@ class UsersController < ApplicationController
 
   #GET
   def show
-  	@user = User.find(params[:id])
+  	@user = User.find_by_param(params[:id])
     @minituits = @user.minituits.paginate(page: params[:page])
   end
 
@@ -42,7 +42,7 @@ class UsersController < ApplicationController
 
   #POST
   def update
-    @user = User.find(params[:id])
+    @user = User.find_by_param(params[:id])
     if @user.update_attributes(params[:user])
       #handle a successful update.
       flash[:success] = "Perfil actualizado"
@@ -55,21 +55,21 @@ class UsersController < ApplicationController
 
   #GET
   def destroy
-    User.find(params[:id]).destroy
+    User.find_by_param(params[:id]).destroy
     flash[:success] = "Usuario eliminado"
     redirect_to users_url
   end
 
   def following
     @title = "Following"
-    @user = User.find(params[:id])
+    @user = User.find_by_param(params[:id])
     @users = @user.followed_users.paginate(page: params[:page])
     render 'show_follow'
   end
 
   def followers
     @title = "Followers"
-    @user = User.find(params[:id])
+    @user = User.find_by_param(params[:id])
     @users = @user.followers.paginate(page: params[:page])
     render 'show_follow'
   end
@@ -85,7 +85,7 @@ class UsersController < ApplicationController
     end
 
     def usuario_correcto
-      @user = User.find(params[:id])
+      @user = User.find_by_param(params[:id])
       redirect_to(root_path) unless current_user?(@user)
     end
 

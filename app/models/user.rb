@@ -13,7 +13,7 @@
 #
 
 class User < ActiveRecord::Base
-  attr_accessible :email, :name, :password, :password_confirmation
+  attr_accessible :email, :name, :password, :password_confirmation, :username
   #let RoR handle password stuff (authenticate methods)
   has_secure_password
 
@@ -37,8 +37,12 @@ class User < ActiveRecord::Base
   #Regex para emails correctos, valida que exista un email, que tenga el formato
   #correcto y que sea unico independientemente de mayusculas o minusculas
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+  VALID_USERNAME_REGEX = /\w/i
   validates :email, presence: true, format: { with: VALID_EMAIL_REGEX },
   					uniqueness: { case_sensitive: false} 
+
+  validates :username, presence: true, format: { with: VALID_USERNAME_REGEX },
+            uniqueness: { case_sensitive: false }
 
   validates :password, presence: true, length: { minimum: 6 }
   validates :password_confirmation, presence: true
@@ -59,7 +63,14 @@ class User < ActiveRecord::Base
   def unfollow!(other_user)
     relationships.find_by_followed_id(other_user.id).destroy
   end
+
+  def to_param
+    username
+  end
   
+  def self.find_by_param(input)
+    find_by_username(input)
+  end
   private
 
     def create_remember_token
